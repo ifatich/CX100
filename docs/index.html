@@ -324,6 +324,78 @@
             50% { opacity: 0; }
         }
 
+        /* Google App Password Mockups */
+        .google-mock {
+            background-color: #1f1f1f;
+            color: #e3e3e3;
+            font-family: 'Inter', sans-serif;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 0;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: left;
+        }
+
+        .google-mock .g-header {
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .google-mock .g-card {
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .google-mock .g-input-wrapper {
+            background-color: #303030;
+            border-bottom: 2px solid #8ab4f8;
+            padding: 8px 16px;
+            margin: 16px 0;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .google-mock .g-input-label {
+            font-size: 12px;
+            color: #8ab4f8;
+            margin-bottom: 4px;
+        }
+        
+        .google-mock .g-input-text {
+            font-size: 16px;
+            color: #e3e3e3;
+        }
+
+        .google-mock .g-button {
+            background-color: #8ab4f8;
+            color: #1f1f1f;
+            padding: 10px 24px;
+            border-radius: 24px;
+            float: right;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .google-mock .g-pass-box {
+            background-color: #1a1a1a;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 16px 0;
+            color: #ffffff;
+            letter-spacing: 2px;
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .chrome-header h1 {
@@ -392,6 +464,35 @@
                     <li>Klik tombol <strong>Generate</strong>.</li>
                     <li>Simpan 16 karakter password yang muncul di layar untuk dimasukkan ke konfigurasi bot.</li>
                 </ol>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 24px; margin-top: 32px;">
+                    <!-- Visual Step 1 -->
+                    <div class="google-mock">
+                        <div class="g-header"><span style="font-size: 24px;">←</span> App passwords</div>
+                        <div class="g-card">
+                            <p style="font-size: 14px; margin-bottom: 16px; opacity: 0.8; font-family: 'Inter', sans-serif; line-height: 1.5; max-width: 100%;">To create a new app specific password, type a name for it below...</p>
+                            <div class="g-input-wrapper">
+                                <div class="g-input-label">App name</div>
+                                <div class="g-input-text">CX100 Bot<span class="cursor"></span></div>
+                            </div>
+                            <div style="overflow: hidden; margin-top: 24px;">
+                                <div class="g-button">Create</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Visual Step 2 -->
+                    <div class="google-mock" style="background-color: #202124;">
+                        <div class="g-header">Generated app password</div>
+                        <p style="font-size: 14px; opacity: 0.8; font-family: 'Inter', sans-serif; max-width: 100%;">Your app password for your device</p>
+                        <div class="g-pass-box">
+                            xxxx xxxx xxxx xxxx
+                        </div>
+                        <div style="overflow: hidden; margin-top: 24px;">
+                            <div class="g-button" style="background: transparent; color: #8ab4f8; border: 1px solid rgba(255,255,255,0.15);">Done</div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- SECTION 3: KONFIGURASI (CREAM) -->
