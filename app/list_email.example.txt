@@ -1,0 +1,9 @@
+# --- CONTOH PENGGUNAAN DOT TRICK ---
+# Masukkan daftar email target (satu baris satu email)
+# Pastikan menggunakan akhiran @googlemail.com
+
+n.ama.anda@googlemail.com
+na.ma.anda@googlemail.com
+nam.a.anda@googlemail.com
+nama.a.nda@googlemail.com
+nama.an.da@googlemail.com
