@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentasi CX100 Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset for Layout Consistency */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            /* Brand & Surface Colors */
+            --colors-primary: #000000;
+            --colors-canvas: #ffffff;
+            --colors-inverse-canvas: #000000;
+            --colors-surface-soft: rgba(0, 0, 0, 0.04);
+
+            /* Text Colors */
+            --colors-ink: #000000;
+            --colors-inverse-ink: #ffffff;
+
+            /* Block Colors */
+            --colors-block-lime: #c6f16d;
+            --colors-block-lilac: #d8b4fe;
+            --colors-block-cream: #fef3c7;
+            --colors-block-navy: #131e32;
+
+            /* Shapes & Spacing */
+            --rounded-pill: 9999px;
+            --rounded-lg: 32px;
+
+            /* Typographic Scale Spacing */
+            --spacing-xxl: 80px;
+            --spacing-xl: 64px;
+            --spacing-lg: 48px;
+            --spacing-md: 32px;
+            --spacing-sm: 24px;
+            --spacing-xs: 16px;
+        }
+
+        html {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-weight: 340;
+            color: var(--colors-ink);
+            background-color: var(--colors-canvas);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Master Layout Container */
+        .page-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-xl) var(--spacing-sm);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+        }
+
+        /* Chrome / Monochrome Nav */
+        .chrome-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-xl) 0 var(--spacing-sm);
+        }
+
+        .chrome-header h1 {
+            font-size: 64px;
+            font-weight: 540;
+            letter-spacing: -0.06em;
+            line-height: 1;
+        }
+
+        .chrome-header p {
+            font-size: 24px;
+            font-weight: 340;
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Color Blocks Container */
+        .blocks-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        /* Individual Color Blocks */
+        .color-block {
+            border-radius: var(--rounded-lg);
+            padding: var(--spacing-xxl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            align-items: flex-start;
+        }
+
+        .block-lime {
+            background-color: var(--colors-block-lime);
+            color: var(--colors-ink);
+        }
+
+        .block-navy {
+            background-color: var(--colors-block-navy);
+            color: var(--colors-inverse-ink);
+        }
+
+        .block-cream {
+            background-color: var(--colors-block-cream);
+            color: var(--colors-ink);
+        }
+
+        .block-lilac {
+            background-color: var(--colors-block-lilac);
+            color: var(--colors-ink);
+        }
+
+        /* Taxonomy Markers */
+        .eyebrow {
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 14px;
+            font-weight: 700;
+            opacity: 0.9;
+        }
+
+        /* Display Typography */
+        .color-block h2 {
+            font-size: 48px;
+            font-weight: 540;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+        }
+
+        .color-block p {
+            font-size: 20px;
+            line-height: 1.6;
+        }
+
+        /* Lists */
+        .color-block ul,
+        .color-block ol {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 20px;
+            padding-left: 28px;
+        }
+
+        .color-block li {
+            line-height: 1.6;
+            padding-left: 8px;
+        }
+
+        /* Links */
+        a {
+            color: inherit;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        a:hover {
+            opacity: 0.7;
+        }
+
+        .block-navy a {
+            color: var(--colors-block-lime);
+        }
+
+        /* Code Blocks */
+        pre {
+            background-color: var(--colors-surface-soft);
+            padding: var(--spacing-md);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 800px;
+            overflow-x: auto;
+            margin: var(--spacing-xs) 0;
+        }
+
+        .block-navy pre {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        code {
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Inline Code */
+        p code,
+        li code {
+            background-color: rgba(0, 0, 0, 0.06);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        .block-navy p code,
+        .block-navy li code {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Pill CTAs */
+        .pill-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--colors-primary);
+            color: var(--colors-canvas);
+            padding: 16px 36px;
+            border-radius: var(--rounded-pill);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 18px;
+            transition: opacity 0.2s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+            margin-top: var(--spacing-xs);
+        }
+
+        .pill-btn:hover {
+            opacity: 0.85;
+            transform: translateY(-1px);
+        }
+
+        .block-navy .pill-btn {
+            background-color: var(--colors-canvas);
+            color: var(--colors-primary);
+        }
+
+        /* Alerts */
+        .alert-box {
+            background-color: rgba(0, 0, 0, 0.04);
+            border-left: 4px solid var(--colors-primary);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 0 16px 16px 0;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: var(--spacing-xs) 0;
+        }
+
+        .block-navy .alert-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left-color: var(--colors-block-lime);
+        }
+
+        .alert-box strong {
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+
+        /* Terminal Mockup Visuals */
+        .terminal-mock {
+            background-color: #1a1b26;
+            color: #a9b1d6;
+            font-family: 'Space Mono', monospace;
+            padding: 32px;
+            border-radius: 16px;
+            margin: 32px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 800px;
+            overflow-x: auto;
+            line-height: 1.6;
+            font-size: 15px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .block-navy .terminal-mock {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.05);
+        }
+
+        .terminal-mock .header-box {
+            border: 2px solid #a9b1d6;
+            padding: 12px;
+            text-align: center;
+            margin-bottom: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .terminal-mock .success { color: #9ece6a; margin-right: 8px;}
+        .terminal-mock .warning { color: #e0af68; margin-right: 8px;}
+        .terminal-mock .white { color: #c0caf5; }
+        
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background-color: #c0caf5;
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .chrome-header h1 {
+                font-size: 40px;
+            }
+
+            .color-block h2 {
+                font-size: 32px;
+            }
+
+            .color-block {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+
+            .page-wrapper {
+                padding: var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-wrapper">
+        <header class="chrome-header">
+            <h1>Dokumentasi Bot CX100</h1>
+            <p>Panduan lengkap instalasi, konfigurasi, dan eksekusi.</p>
+        </header>
+
+        <main class="blocks-container">
+            
+            <!-- SECTION 1: MEMULAI (LIME) -->
+            <section class="color-block block-lime">
+                <span class="eyebrow">Langkah 01 — Instalasi</span>
+                <h2>Ekstrak &amp; Jalankan</h2>
+                <p>Penggunaan bot ini sangat praktis karena instruksi Konfigurasi dan Data Target telah diintegrasikan di dalam alur eksekusi aplikasi.</p>
+
+                <ol>
+                    <li>Ekstrak (<em>unzip</em>) file aplikasi yang telah Anda unduh.</li>
+                    <li>Buka folder dari hasil ekstrak tersebut.</li>
+                    <li>Klik ganda (<em>double-click</em>) pada icon aplikasi <strong>CX100 Test</strong>.</li>
+                    <li>Ikuti langkah-langkah yang muncul di dalam aplikasi. Aplikasi akan memandu Anda untuk mengatur <strong>Konfigurasi</strong> dan <strong>Data Target</strong>.</li>
+                </ol>
+
+                <div class="alert-box">
+                    <strong>Catatan Penting</strong>
+                    <span>Pastikan Anda tidak memindahkan file atau folder apa pun di luar folder hasil ekstrak agar aplikasi dapat menemukan file dengan benar.</span>
+                </div>
+            </section>
+
+            <!-- SECTION 2: PERSIAPAN AKUN (NAVY) -->
+            <section class="color-block block-navy">
+                <span class="eyebrow">Langkah 02 — Keamanan</span>
+                <h2>App Password Gmail</h2>
+                <p>Saat aplikasi memandu Anda melakukan konfigurasi, Anda akan dimintai password email. Demi keamanan, Anda wajib menggunakan <strong>App Password</strong>, bukan password utama email Anda.</p>
+                
+                <div class="alert-box">
+                    <strong>Penting</strong>
+                    <span>Akun Gmail Anda harus sudah mengaktifkan fitur Verifikasi 2 Langkah (2-Step Verification) sebelum bisa membuat App Password.</span>
+                </div>
+
+                <ol>
+                    <li>Kunjungi halaman pengaturan keamanan: <a href="https://myaccount.google.com/apppasswords" target="_blank">App Passwords</a>.</li>
+                    <li>Pada kolom <em>Select app</em>, pilih <strong>Other (Custom name)</strong> dan beri nama bebas (misal: "CX100 Bot").</li>
+                    <li>Klik tombol <strong>Generate</strong>.</li>
+                    <li>Simpan 16 karakter password yang muncul di layar untuk dimasukkan ke konfigurasi bot.</li>
+                </ol>
+            </section>
+
+            <!-- SECTION 3: KONFIGURASI (CREAM) -->
+            <section class="color-block block-cream">
+                <span class="eyebrow">Langkah 03 — Panduan Lanjutan</span>
+                <h2>Penjelasan Konfigurasi</h2>
+                <p>Ketika aplikasi berjalan dan mendeteksi konfigurasi masih kosong, ia akan memunculkan peringatan seperti ini:</p>
+
+                <div class="terminal-mock">
+                    <div class="header-box">CX100 TEST — Polling Otomatis</div>
+                    <div><span class="success">✅</span> <span class="white">Node.js: v24.6.0</span></div>
+                    <div><span class="success">✅</span> <span class="white">Google Chrome: sudah terinstall</span></div>
+                    <div><span class="warning">⚠️</span> <span class="white">Konfigurasi default terdeteksi!</span></div>
+                    <div style="padding-left: 32px;">Buka file:  app/config.txt</div>
+                    <div style="padding-left: 32px;">Harap isi GMAIL_OTP dan APPS_PASSWORD dengan benar.</div>
+                    <div style="margin-top: 16px;"><span class="white">Setelah diisi, tekan ENTER untuk lanjut...</span> <span class="cursor"></span></div>
+                </div>
+
+                <p>Buka file <code>config.txt</code> (di dalam folder <code>app</code>), lalu sesuaikan isinya:</p>
+                
+<pre><code># Email Gmail untuk menerima kode OTP
+GMAIL_OTP=email.anda@gmail.com
+
+# Apps Password Gmail (16 karakter, tanpa spasi)
+APPS_PASSWORD=xxxxxxxxxxxxxxxx
+
+# File daftar email (berada di dalam folder yang sama)
+FILE_LIST_EMAIL=list_email.example.txt
+
+# Folder untuk menyimpan hasil tangkapan layar (capture)
+FOLDER_CAPTURE=/Users/namauser/Documents/CX100/capture</code></pre>
+
+                <ul>
+                    <li><code>GMAIL_OTP</code>: Alamat Gmail yang Anda gunakan.</li>
+                    <li><code>APPS_PASSWORD</code>: Password aplikasi sebanyak 16 karakter (didapat dari langkah 02).</li>
+                    <li><code>FILE_LIST_EMAIL</code>: Nama file yang berisi daftar email target.</li>
+                    <li><code>FOLDER_CAPTURE</code>: Path folder lokasi untuk menyimpan hasil <em>capture</em>.</li>
+                </ul>
+            </section>
+
+            <!-- SECTION 4: DATA TARGET (LILAC) -->
+            <section class="color-block block-lilac">
+                <span class="eyebrow">Langkah 04 — Panduan Lanjutan</span>
+                <h2>Menyiapkan Data Target</h2>
+                <p>Setelah konfigurasi selesai, bot akan mengecek data target Anda. Jika kosong, bot akan memunculkan layar berikut:</p>
+
+                <div class="terminal-mock">
+                    <div class="header-box">CX100 TEST — Polling Otomatis</div>
+                    <div><span class="success">✅</span> <span class="white">Node.js: v24.6.0</span></div>
+                    <div><span class="success">✅</span> <span class="white">Google Chrome: sudah terinstall</span></div>
+                    <div><span class="warning">⚠️</span> <span class="white">File daftar email kosong!</span></div>
+                    <div style="padding-left: 32px;">Buka file:  app/list_email.example.txt</div>
+                    <div style="padding-left: 32px;">Isi dengan daftar email tujuan.</div>
+                    <div style="margin-top: 16px;"><span class="white">Setelah diisi, tekan ENTER untuk lanjut...</span> <span class="cursor"></span></div>
+                </div>
+
+                <p>Anda harus mengedit file <code>list_email.example.txt</code> (atau sesuai nama yang Anda atur di konfigurasi) dan memasukkan satu alamat email per baris.</p>
+                
+<pre><code>email_target_1@gmail.com
+email_target_2@yahoo.com
+email_target_3@outlook.com</code></pre>
+            </section>
+            
+        </main>
+    </div>
+
+</body>
+</html>
