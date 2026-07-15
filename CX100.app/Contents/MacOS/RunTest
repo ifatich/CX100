@@ -1,0 +1,129 @@
+#!/bin/bash
+
+# ============================================================
+# CX100 TEST — All-in-One macOS App
+# ============================================================
+
+# Jika dijalankan dari .app (bukan dari Terminal), buka Terminal dulu
+if [ ! -t 0 ]; then
+  SCRIPT_PATH="$(cd "$(dirname "$0")" && pwd)/RunTest"
+  osascript -e "tell application \"Terminal\" to activate" \
+            -e "tell application \"Terminal\" to do script \"clear; exec '$SCRIPT_PATH'\""
+  exit 0
+fi
+
+APP_PATH="$(cd "$(dirname "$0")/../../.." && pwd)"
+APP_DIR="$APP_PATH/app"
+
+# Workaround untuk macOS App Translocation (jika dijalankan dari Downloads)
+if [[ "$APP_PATH" == /private/var/folders/* ]] || [[ "$APP_PATH" == /var/folders/* ]]; then
+  POSSIBLE_DIR=$(find "$HOME/Downloads" "$HOME/Desktop" "$HOME/Documents" -maxdepth 3 -type d -name "app" -exec test -f "{}/pollingrev.test.js" \; -print -quit 2>/dev/null)
+  if [ -n "$POSSIBLE_DIR" ]; then
+    APP_DIR="$POSSIBLE_DIR"
+  else
+    echo "❌ Sistem Keamanan macOS menahan aplikasi (App Translocation)."
+    echo "💡 SOLUSI CEPAT:"
+    echo "1. Tutup jendela ini."
+    echo "2. Pindahkan folder bot ini dari Downloads ke folder Documents atau Desktop."
+    echo "3. Buka kembali CX100.app"
+    echo ""
+    read -n 1 -s -r -p "Tekan ENTER untuk keluar..."
+    exit 1
+  fi
+fi
+
+echo "╔══════════════════════════════════════════════╗"
+echo "║         CX100 TEST — Polling Otomatis        ║"
+echo "╚══════════════════════════════════════════════╝"
+echo ""
+
+# Bersihkan port Chrome debugging
+lsof -ti:9222 &>/dev/null && kill -9 $(lsof -ti:9222) 2>/dev/null
+
+# ─── STEP 1: Xcode Command Line Tools ───
+if ! xcode-select -p &>/dev/null; then
+  echo "📦 Menginstall Xcode Command Line Tools..."
+  echo "   (Ikuti dialog yang muncul, lalu jalankan ulang app)"
+  xcode-select --install &>/dev/null || true
+  echo ""
+  read -n 1 -s -r -p "Tekan ENTER untuk keluar..."
+  exit 1
+fi
+
+# ─── STEP 2: Homebrew ───
+load_brew() {
+  [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)" && return
+  [[ -x /usr/local/bin/brew ]] && eval "$(/usr/local/bin/brew shellenv)"
+}
+
+if ! command -v brew &>/dev/null; then
+  echo "🍺 Menginstall Homebrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  load_brew
+fi
+
+load_brew
+
+# ─── STEP 3: Node.js ───
+if ! command -v node &>/dev/null; then
+  echo "📦 Menginstall Node.js..."
+  brew install node
+else
+  echo "✅ Node.js: $(node --version)"
+fi
+
+# ─── STEP 4: Google Chrome ───
+CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+if [[ ! -x "$CHROME_BIN" ]]; then
+  echo "🌐 Menginstall Google Chrome..."
+  brew install --cask google-chrome
+else
+  echo "✅ Google Chrome: sudah terinstall"
+fi
+
+# ─── STEP 5: Config ───
+CONFIG_FILE="$APP_DIR/config.txt"
+if [ ! -f "$CONFIG_FILE" ]; then
+  echo "❌ File config.txt tidak ditemukan!"
+  read -n 1 -s -r -p "Tekan ENTER untuk keluar..."
+  exit 1
+fi
+
+if grep -q "isi_email_anda" "$CONFIG_FILE" || grep -q "isi_apps_password" "$CONFIG_FILE"; then
+  echo "⚠️   Config belum diisi!"
+  echo "   Buka file:  app/config.txt"
+  echo "   Isi email & Apps Password Gmail Anda."
+  read -n 1 -s -r -p "Setelah diisi, tekan ENTER untuk lanjut..."
+fi
+
+# ─── STEP 6: Node modules ───
+if [ ! -d "$APP_DIR/node_modules" ]; then
+  echo "📦 Menginstall library Node.js..."
+  cd "$APP_DIR" && npm install
+fi
+
+# ─── STEP 7: List email ───
+LIST_FILE="$APP_DIR/list_email.example.txt"
+if [ ! -f "$LIST_FILE" ] || [ ! -s "$LIST_FILE" ]; then
+  echo "⚠️   File daftar email kosong!"
+  echo "   Buka file:  app/list_email.example.txt"
+  echo "   Isi dengan daftar email tujuan."
+  read -n 1 -s -r -p "Setelah diisi, tekan ENTER untuk lanjut..."
+fi
+
+# ─── RUN ───
+echo ""
+echo "▶️  Menjalankan test..."
+echo "   (Biarkan jendela ini terbuka sampai selesai)"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+
+cd "$APP_DIR" && node pollingrev.test.js
+
+EXIT_CODE=$?
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+[ "$EXIT_CODE" -eq 0 ] && echo "🎉 SELESAI!" || echo "✅ Selesai (kode: $EXIT_CODE)"
+echo ""
+read -n 1 -s -r -p "Tekan ENTER untuk menutup..."
+exit "$EXIT_CODE"
