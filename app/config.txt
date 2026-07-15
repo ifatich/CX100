@@ -1,0 +1,19 @@
+# ============================================================
+# KONFIGURASI CX100 TEST — Isi data Anda di bawah ini
+# PENTING: Anda HARUS mengubah nilai-nilai di bawah ini dengan data Anda yang sebenarnya.
+# Program tidak akan berjalan jika masih menggunakan data default ini.
+# ============================================================
+
+# Email Gmail untuk menerima kode OTP
+GMAIL_OTP=CONTOH_EMAIL_ANDA@gmail.com
+
+# Apps Password Gmail (16 karakter, tanpa spasi)
+# Cara buat: https://myaccount.google.com/apppasswords
+APPS_PASSWORD=xxxxxxxxxxxxxxxx
+
+# ============================================================
+# (Tidak perlu diubah jika tidak tahu)
+# ============================================================
+FILE_LIST_EMAIL=list_email.example.txt
+# Ubah FOLDER_CAPTURE sesuai dengan folder di laptop Anda jika perlu
+FOLDER_CAPTURE=capture
