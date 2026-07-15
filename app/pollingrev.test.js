@@ -246,9 +246,9 @@ async function isiEmailDanTungguVerifikasi({
   await emailInput.fill(emailSaatIni);
 
   // Trigger tambahan untuk halaman yang mulai memvalidasi setelah blur.
-  await emailInput.dispatchEvent('input').catch(() => {});
-  await emailInput.dispatchEvent('change').catch(() => {});
-  await emailInput.press('Tab').catch(() => {});
+  await emailInput.dispatchEvent('input').catch(() => { });
+  await emailInput.dispatchEvent('change').catch(() => { });
+  await emailInput.press('Tab').catch(() => { });
 
   const labelPersetujuan = pagePolling
     .getByText(
@@ -294,9 +294,9 @@ async function isiEmailDanTungguVerifikasi({
 
     if (nilaiEmail.toLowerCase() !== emailSaatIni.trim().toLowerCase()) {
       await emailInput.fill(emailSaatIni);
-      await emailInput.dispatchEvent('input').catch(() => {});
-      await emailInput.dispatchEvent('change').catch(() => {});
-      await emailInput.press('Tab').catch(() => {});
+      await emailInput.dispatchEvent('input').catch(() => { });
+      await emailInput.dispatchEvent('change').catch(() => { });
+      await emailInput.press('Tab').catch(() => { });
     }
 
     if (await locatorTerlihat(pesanErrorEmail)) {
@@ -563,7 +563,7 @@ async function scrollHalamanPrivasiSampaiBawah({
       y: Math.max(1, Math.floor(ukuranViewport.height / 2)),
     },
     force: true,
-  }).catch(() => {});
+  }).catch(() => { });
 
   let posisiSebelumnya = '';
   let stabil = 0;
@@ -638,7 +638,7 @@ async function scrollHalamanPrivasiSampaiBawah({
 
     // Fallback untuk layout yang hanya merespons input keyboard.
     if (putaran % 3 === 0) {
-      await pagePolling.keyboard.press('PageDown').catch(() => {});
+      await pagePolling.keyboard.press('PageDown').catch(() => { });
     }
 
     await pagePolling.waitForTimeout(250);
@@ -691,8 +691,8 @@ async function scrollHalamanPrivasiSampaiBawah({
     }
   });
 
-  await pagePolling.mouse.wheel(0, 10000).catch(() => {});
-  await pagePolling.keyboard.press('End').catch(() => {});
+  await pagePolling.mouse.wheel(0, 10000).catch(() => { });
+  await pagePolling.keyboard.press('End').catch(() => { });
   await pagePolling.waitForTimeout(1000);
 }
 
@@ -1344,14 +1344,14 @@ async function hapusOtpSetelahSukses({
         process.stdout.write('\r\x1b[K\n');
         console.log(
           `Data ${urutan} (${emailSaatIni}) start time: ${startTime} ` +
-            `end time: ${endTime} >>> ${statusAkhir}`
+          `end time: ${endTime} >>> ${statusAkhir}`
         );
         console.log(
           `${urutan}/${totalTarget} | success: ${jumlahSukses} | gagal: ${jumlahGagal}`
         );
 
         if (pagePolling) {
-          await pagePolling.close().catch(() => {});
+          await pagePolling.close().catch(() => { });
         }
       }
     }
